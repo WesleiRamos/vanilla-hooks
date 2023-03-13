@@ -1,0 +1,19 @@
+{
+  "name": "vanilla-hooks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "hooks.js",
+  "module": "dist/module.js",
+  "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.8.3",
+    "typescript": "^4.9.5"
+  }
+}
