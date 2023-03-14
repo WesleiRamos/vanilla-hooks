@@ -2,6 +2,20 @@ import { createContext, getContext } from './contexts'
 import { update, getCurrentReference } from './updater'
 
 /**
+ * Dado 2 arrays, verifica se seus valores alteraram
+ * 
+ * @param current 
+ * @param previous 
+ * @returns 
+ */
+const hasDepsChanged = (current?: any[], previous?: any[]) => {
+  if (previous === undefined)
+    return true
+
+  return current!.some((value, index) => !Object.is(value, previous[index]))
+}
+
+/**
  * Recebe uma função e um estado inicial, retorna um array
  * com o estado atual e uma função de atualização.
  * 
@@ -60,6 +74,29 @@ export const useState = <T>(initialValue: T) => {
  */
 export const useRef = <T>(initialValue: T) => {
   return useState({ current: initialValue })[0]
+}
+
+/**
+ * Recebe uma função e um array de dependências, e executa a função
+ * toda vez que o array de dependências for alterado.
+ * 
+ * @param callback 
+ * @param deps 
+ */
+export const useEffect = (callback: Function, deps?: any[]) => {
+  const reference = getCurrentReference()
+  const context   = getContext(reference)
+  const localId   = context.id++
+
+  if (hasDepsChanged(deps, context.hooks[localId])) {
+    const returns = callback()
+
+    if (typeof returns === 'function') {
+      context.cleanups.push(returns)
+    }
+  }
+
+  context.hooks[localId] = deps
 }
 
 /**
