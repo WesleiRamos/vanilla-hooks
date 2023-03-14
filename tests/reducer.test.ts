@@ -54,6 +54,30 @@ describe('useReducer', () => {
     expect(pCounter.innerText).toBe(counter)
   })
 
+  test('should be called 2 times', async () => {
+    let updateCounter = 0
+
+    const counter = await new Promise(resolve => hooked(() => {
+      const [ state, dispatch ] = useReducer<ReducerState, ReducerAction>(simpleReducer, {
+        counter: 0
+      })
+
+      pCounter.innerText = state.counter.toString()
+      updateCounter++
+
+      if (state.counter <= maxCounter) {
+        for (let i = 0; i <= maxCounter; i++) {
+          dispatch({ type: 'increment' })
+        }
+      } else {
+        resolve(state.counter.toString())
+      }
+    }))
+
+    expect(updateCounter).toBe(2)
+    expect(pCounter.innerText).toBe(counter)
+  })
+
   test('should throw error', async () => {
     expect(new Promise((_, reject) => hooked(() => {
       const [, dispatch ] = useReducer<ReducerState, ReducerAction>(simpleReducer, {
