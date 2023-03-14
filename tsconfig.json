@@ -1,17 +1,33 @@
 {
   "compilerOptions": {
-    "target": "ES2020",                           
-    "module": "ES2020",
+    "baseUrl": "./",
+    "target": "es2020",                           
+    "module": "es2020",
     "strict": true,
     "outDir": "./dist",
-    "rootDir": "./lib",
-    "typeRoots": [ "./lib/types" ],
+    "rootDir": "./",
+    "moduleResolution": "node",
+    "paths": {
+      "lib/": [ "./lib" ]
+    },
+    "typeRoots": [
+      "./lib/types",
+      "./node_modules/@types"
+    ],
+    "types": [
+      "jest"
+    ],
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  },
   "include": [
-    "lib"
+    "lib/**/*",
+    "tests/**/*"
   ],
   "exclude": [
     "node_modules"
