@@ -28,6 +28,30 @@ export const useReducer = <T, D>(reducer: Function, initialState: T): [ T, Dispa
   return [context.hooks[localId], dispatch]
 }
 
+const useStateReducer = (state: any, action: any) => (
+  typeof action === 'function'
+    ? action(state) || action
+    : action
+)
+
+/**
+ * Recebe um estado inicial e retorna um array com o estado atual
+ * e uma função de atualização.
+ * 
+ * @param initialValue 
+ * @returns 
+ */
+export const useState = <T>(initialValue: T) => {
+  return useReducer<T, T | ((state: T) => T)>(useStateReducer, initialValue)
+}
+
+/**
+ * Recebe uma função e prepara para que seja possível
+ * a utilização de hooks dentro dela.
+ * 
+ * @param fn    Função que será utilizada
+ * @param args  Argumentos que serão passados para a função toda vez que ela for executada
+ */
 export const hooked = (fn: Function, ...args: any[]) => {
   createContext(fn, args)
   update(fn)
