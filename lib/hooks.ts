@@ -28,6 +28,14 @@ export const useReducer = <T, D>(reducer: Function, initialState: T): [ T, Dispa
   return [context.hooks[localId], dispatch]
 }
 
+/**
+ * Função unica para o hook useState, será passada para o hook
+ * useReducer.
+ * 
+ * @param state 
+ * @param action 
+ * @returns 
+ */
 const useStateReducer = (state: any, action: any) => (
   typeof action === 'function'
     ? action(state) || action
@@ -43,6 +51,15 @@ const useStateReducer = (state: any, action: any) => (
  */
 export const useState = <T>(initialValue: T) => {
   return useReducer<T, T | ((state: T) => T)>(useStateReducer, initialValue)
+}
+
+/**
+ * 
+ * @param initialValue 
+ * @returns 
+ */
+export const useRef = <T>(initialValue: T) => {
+  return useState({ current: initialValue })[0]
 }
 
 /**
