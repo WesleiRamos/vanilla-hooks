@@ -5,7 +5,7 @@ describe('useEffect', () => {
   test('should be called on function update', async () => {
     const useEffectCallback = jest.fn()
 
-    const counter = await hookedPromise(({ resolve }) => {
+    const counter = await hookedPromise<number>(({ resolve }) => {
       const [ counter, setCounter ] = useState(0)
 
       useEffect(useEffectCallback)
@@ -58,7 +58,7 @@ describe('useEffect', () => {
   test('cleanup should be called', async () => {
     const cleanup = jest.fn()
 
-    const counter = await hookedPromise(({ resolve }) => {
+    const counter = await hookedPromise<number>(({ resolve }) => {
       const [ counter, setCounter ] = useState(0)
 
       useEffect(() => cleanup)
