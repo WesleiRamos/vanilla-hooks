@@ -7,7 +7,7 @@ const config: Config = {
   transform: {
     '^.+\\.ts$': 'ts-jest',
   },
-  testEnvironment: '@happy-dom/jest-environment',
+  testEnvironment: 'node',
   moduleFileExtensions: ['ts', 'js', 'json', 'node']
 }
 

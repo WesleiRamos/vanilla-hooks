@@ -3,62 +3,53 @@ import { describe, expect, test } from '@jest/globals'
 
 describe('useState', () => {
   const maxCounter = 5
-  const pCounter = document.createElement('p')
 
   test('should increment counter', async () => {
     const counter = await new Promise(resolve => hooked(() => {
       const [ state, setState ] = useState(0)
       
-      pCounter.innerText = state.toString()
-
-      state <= maxCounter
+      state < maxCounter
         ? setState(state + 1)
-        : resolve(state.toString())
+        : resolve(state)
     }))
 
-    expect(pCounter.innerText).toBe(counter)
+    expect(counter).toBe(maxCounter)
   })
 
   test('should decrement counter', async () => {
     const counter = await new Promise(resolve => hooked(() => {
       const [ state, setState ] = useState(maxCounter)
-      
-      pCounter.innerText = state.toString()
-
+    
       state >= 1
         ? setState(state - 1)
-        : resolve(state.toString())
+        : resolve(state)
     }))
 
-    expect(pCounter.innerText).toBe(counter)
+    expect(counter).toBe(0)
   })
 
   test('should increment counter with function', async () => {
     const counter = await new Promise(resolve => hooked(() => {
       const [ state, setState ] = useState(0)
       
-      pCounter.innerText = state.toString()
-
-      state <= maxCounter
+      state < maxCounter
         ? setState((state: number) => state + 1)
-        : resolve(state.toString())
+        : resolve(state)
     }))
 
-    expect(pCounter.innerText).toBe(counter)
+    expect(counter).toBe(maxCounter)
   })
 
   test('should decrement counter with function', async () => {
     const counter = await new Promise(resolve => hooked(() => {
       const [ state, setState ] = useState(maxCounter)
       
-      pCounter.innerText = state.toString()
-
       state >= 1
         ? setState((state: number) => state - 1)
-        : resolve(state.toString())
+        : resolve(state)
     }))
 
-    expect(pCounter.innerText).toBe(counter)
+    expect(counter).toBe(0)
   })
 
   test('should be called 2 times', async () => {
@@ -67,19 +58,18 @@ describe('useState', () => {
     const counter = await new Promise(resolve => hooked(() => {
       const [ state, setState ] = useState(0)
 
-      pCounter.innerText = state.toString()
       updateCounter++
 
-      if (state <= maxCounter) {
-        for (let i = 0; i <= maxCounter; i++) {
+      if (state < maxCounter) {
+        for (let i = 0; i < maxCounter; i++) {
           setState((state: number) => state + 1)
         }
       } else {
-        resolve(state.toString())
+        resolve(state)
       }
     }))
 
     expect(updateCounter).toBe(2)
-    expect(pCounter.innerText).toBe(counter)
+    expect(counter).toBe(maxCounter)
   })
 })

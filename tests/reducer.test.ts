@@ -11,7 +11,6 @@ type ReducerAction = {
 
 describe('useReducer', () => {
   const maxCounter = 5
-  const pCounter = document.createElement('p')
 
   const simpleReducer = (state: ReducerState, action: ReducerAction) => {
     switch (action.type) {
@@ -28,14 +27,12 @@ describe('useReducer', () => {
         counter: 0
       })
 
-      pCounter.innerText = state.counter.toString()
-
-      state.counter <= maxCounter
+      state.counter < maxCounter
         ? dispatch({ type: 'increment' })
-        : resolve(state.counter.toString())
+        : resolve(state.counter)
     }))
 
-    expect(pCounter.innerText).toBe(counter)
+    expect(counter).toBe(maxCounter)
   })
 
   test('should decrement counter', async () => {
@@ -44,14 +41,12 @@ describe('useReducer', () => {
         counter: maxCounter
       })
 
-      pCounter.innerText = state.counter.toString()
-
       state.counter >= 1
         ? dispatch({ type: 'decrement' })
-        : resolve(state.counter.toString())
+        : resolve(state.counter)
     }))
 
-    expect(pCounter.innerText).toBe(counter)
+    expect(counter).toBe(0)
   })
 
   test('should be called 2 times', async () => {
@@ -62,7 +57,6 @@ describe('useReducer', () => {
         counter: 0
       })
 
-      pCounter.innerText = state.counter.toString()
       updateCounter++
 
       if (state.counter <= maxCounter) {
@@ -75,7 +69,7 @@ describe('useReducer', () => {
     }))
 
     expect(updateCounter).toBe(2)
-    expect(pCounter.innerText).toBe(counter)
+    expect(counter).toBe(counter)
   })
 
   test('should throw error', async () => {
