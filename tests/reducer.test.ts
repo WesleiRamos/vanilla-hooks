@@ -1,4 +1,4 @@
-import { hooked, useReducer } from 'lib/hooks'
+import { hookedPromise, useReducer } from 'lib/hooks'
 import { describe, expect, test } from '@jest/globals'
 
 type ReducerState = {
@@ -22,67 +22,60 @@ describe('useReducer', () => {
   }
 
   test('should increment counter', async () => {
-    const counter = await new Promise(resolve => hooked(() => {
-      const [ state, dispatch ] = useReducer<ReducerState, ReducerAction>(simpleReducer, {
-        counter: 0
-      })
+    expect(hookedPromise(({ resolve }) => {
+      const [ state, dispatch ] = useReducer<ReducerState, ReducerAction>(
+        simpleReducer, { counter: 0 }
+      )
 
       state.counter < maxCounter
         ? dispatch({ type: 'increment' })
         : resolve(state.counter)
-    }))
-
-    expect(counter).toBe(maxCounter)
+    })).resolves.toBe(maxCounter)
   })
 
   test('should decrement counter', async () => {
-    const counter = await new Promise(resolve => hooked(() => {
-      const [ state, dispatch ] = useReducer<ReducerState, ReducerAction>(simpleReducer, {
-        counter: maxCounter
-      })
+    expect(hookedPromise(({ resolve }) => {
+      const [ state, dispatch ] = useReducer<ReducerState, ReducerAction>(
+        simpleReducer, { counter: maxCounter }
+      )
 
       state.counter >= 1
         ? dispatch({ type: 'decrement' })
         : resolve(state.counter)
-    }))
-
-    expect(counter).toBe(0)
+    })).resolves.toBe(0)
   })
 
   test('should be called 2 times', async () => {
     let updateCounter = 0
 
-    const counter = await new Promise(resolve => hooked(() => {
-      const [ state, dispatch ] = useReducer<ReducerState, ReducerAction>(simpleReducer, {
-        counter: 0
-      })
-
+    expect(hookedPromise(({ resolve }) => {
       updateCounter++
 
-      if (state.counter <= maxCounter) {
-        for (let i = 0; i <= maxCounter; i++) {
+      const [ state, dispatch ] = useReducer<ReducerState, ReducerAction>(
+        simpleReducer, { counter: 0 }
+      )
+
+      if (state.counter < maxCounter) {
+        for (let i = 0; i < maxCounter; i++) {
           dispatch({ type: 'increment' })
         }
       } else {
-        resolve(state.counter.toString())
+        resolve([ updateCounter, state.counter ])
       }
-    }))
-
-    expect(updateCounter).toBe(2)
-    expect(counter).toBe(counter)
+    })).resolves.toEqual([ 2, maxCounter ])
   })
 
   test('should throw error', async () => {
-    expect(new Promise((_, reject) => hooked(() => {
-      const [, dispatch ] = useReducer<ReducerState, ReducerAction>(simpleReducer, {
-        counter: 0
-      })
+    expect(hookedPromise(({ reject }) => {
+      const [, dispatch ] = useReducer<ReducerState, ReducerAction>(
+        simpleReducer, { counter: 0 }
+      )
 
       try {
         dispatch({ type: 'invalid' as any })
       } catch (error) {
         reject(error)
       }
-    }))).rejects.toThrowError('Invalid action')
+    })).rejects.toThrowError('Invalid action')
   })
 })

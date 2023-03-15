@@ -1,19 +1,19 @@
-import { hooked, useState, useEffect } from 'lib/hooks'
+import { hookedPromise, useState, useEffect } from 'lib/hooks'
 import { describe, expect, jest, test } from '@jest/globals'
 
 describe('useEffect', () => {
   test('should be called on function update', async () => {
     const useEffectCallback = jest.fn()
 
-    const counter: number = await new Promise((resolve) => hooked(() => {
+    const counter = await hookedPromise(({ resolve }) => {
       const [ counter, setCounter ] = useState(0)
 
       useEffect(useEffectCallback)
 
-      counter <= 4
+      counter < 4
         ? setCounter(counter + 1)
         : resolve(counter + 1)
-    }))
+    })
 
     expect(useEffectCallback).toBeCalledTimes(counter)
   })
@@ -21,7 +21,7 @@ describe('useEffect', () => {
   test('should be called once', async () => {
     const useEffectCallback = jest.fn()
 
-    await new Promise((resolve) => hooked(() => {
+    await hookedPromise(({ resolve }) => {
       const [ counter, setCounter ] = useState(0)
 
       useEffect(useEffectCallback, [])
@@ -29,7 +29,7 @@ describe('useEffect', () => {
       counter <= 4
         ? setCounter(counter + 1)
         : resolve(counter + 1)
-    }))
+    })
 
     expect(useEffectCallback).toBeCalledTimes(1)
   })
@@ -37,7 +37,7 @@ describe('useEffect', () => {
   test('should be called 3 times', async () => {
     const useEffectCallback = jest.fn()
 
-    await new Promise((resolve) => hooked(() => {
+    await hookedPromise(({ resolve }) => {
       const [ name, setName ] = useState('')
       const [ counter, setCounter ] = useState(1)
 
@@ -50,7 +50,7 @@ describe('useEffect', () => {
       counter <= 9
         ? setCounter(counter + 1)
         : resolve(counter)
-    }))
+    })
 
     expect(useEffectCallback).toBeCalledTimes(3)
   })
@@ -58,7 +58,7 @@ describe('useEffect', () => {
   test('cleanup should be called', async () => {
     const cleanup = jest.fn()
 
-    const counter: number = await new Promise((resolve) => hooked(() => {
+    const counter = await hookedPromise(({ resolve }) => {
       const [ counter, setCounter ] = useState(0)
 
       useEffect(() => cleanup)
@@ -66,7 +66,7 @@ describe('useEffect', () => {
       counter <= 4
         ? setCounter(counter + 1)
         : resolve(counter)
-    }))
+    })
 
     expect(cleanup).toBeCalledTimes(counter)
   })

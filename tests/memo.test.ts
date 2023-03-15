@@ -1,11 +1,11 @@
-import { hooked, useState, useMemo } from 'lib/hooks'
+import { hookedPromise, useState, useMemo } from 'lib/hooks'
 import { describe, expect, test } from '@jest/globals'
 
 describe('useMemo', () => {
   const array = [ 1, 2, 3, 4, 5 ]
 
   test('should update one time with no deps', async () => {
-    const values: number[] = await new Promise((resolve) => hooked(() => {
+    expect(hookedPromise(({ resolve }) => {
       const [ multiplier, setMultiplier ] = useState(1)
 
       const value = useMemo(() => (
@@ -15,13 +15,11 @@ describe('useMemo', () => {
       multiplier < 3
         ? setMultiplier(multiplier + 1)
         : resolve(value)
-    }))
-
-    expect(values).toEqual([ 1, 2, 3, 4, 5 ])
+    })).resolves.toEqual([ 1, 2, 3, 4, 5 ])
   })
 
   test('should update 3 time with deps', async () => {
-    const values: number[] = await new Promise((resolve) => hooked(() => {
+    expect(hookedPromise(({ resolve }) => {
       const [ multiplier, setMultiplier ] = useState(1)
       
       const value = useMemo(() => (
@@ -31,8 +29,6 @@ describe('useMemo', () => {
       multiplier < 3
         ? setMultiplier(multiplier + 1)
         : resolve(value)
-    }))
-
-    expect(values).toEqual([ 3, 6, 9, 12, 15 ])
+    })).resolves.toEqual([ 3, 6, 9, 12, 15 ])
   })
 })
