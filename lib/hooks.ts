@@ -132,3 +132,17 @@ export const hooked = (fn: Function, ...args: any[]) => {
   createContext(fn, args)
   update(fn)
 }
+
+type HookedFn<T = any> = (value: T | PromiseLike<T>, ...args: any[]) => void
+
+/**
+ * Transforma uma função hookada em uma Promise, o primeiro argumento
+ * da função sempre será o resolve da Promise.
+ * 
+ * @param fn 
+ * @param args 
+ * @returns 
+ */
+export const hookedPromise = <T = any>(fn: HookedFn<T>, ...args: any[]) => (
+  new Promise<T>(resolve => hooked(fn, resolve, ...args))
+)
