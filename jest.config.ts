@@ -2,7 +2,7 @@ import type { Config } from 'jest'
 
 const config: Config = {
   moduleNameMapper: {
-    '^lib/(.*)$': '<rootDir>/lib/$1',
+    '^src/(.*)$': '<rootDir>/src/$1',
   },
   transform: {
     '^.+\\.ts$': 'ts-jest',

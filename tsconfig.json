@@ -8,10 +8,10 @@
     "rootDir": "./",
     "moduleResolution": "node",
     "paths": {
-      "lib/": [ "./lib" ]
+      "src/": [ "./src" ]
     },
     "typeRoots": [
-      "./lib/types",
+      "./src/types",
       "./node_modules/@types"
     ],
     "types": [
@@ -26,7 +26,7 @@
     "experimentalSpecifierResolution": "node"
   },
   "include": [
-    "lib/**/*",
+    "src/**/*",
     "tests/**/*"
   ],
   "exclude": [

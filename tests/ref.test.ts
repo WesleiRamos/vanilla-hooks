@@ -1,4 +1,4 @@
-import { hookedPromise, useState, useRef } from 'lib/hooks'
+import { hookedPromise, useState, useRef } from 'src/hooks'
 import { describe, expect, test } from '@jest/globals'
 
 type Reference = {

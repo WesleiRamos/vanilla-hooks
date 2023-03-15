@@ -1,4 +1,4 @@
-import { hookedPromise, useState, useCallback } from 'lib/hooks'
+import { hookedPromise, useState, useCallback } from 'src/hooks'
 import { describe, expect, test } from '@jest/globals'
 
 describe('useCallback', () => {

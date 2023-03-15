@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "watch": "parcel watch",
-    "build": "parcel build lib/hooks.ts --dist-dir dist --no-source-maps",
+    "build": "parcel build src/hooks.ts --dist-dir dist --no-source-maps",
     "test": "jest --watch",
     "e:clock": "parcel examples/clock/index.html"
   },

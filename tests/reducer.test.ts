@@ -1,4 +1,4 @@
-import { hookedPromise, useReducer } from 'lib/hooks'
+import { hookedPromise, useReducer } from 'src/hooks'
 import { describe, expect, test } from '@jest/globals'
 
 type ReducerState = {
