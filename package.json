@@ -2,14 +2,18 @@
   "name": "vanilla-hooks",
   "version": "1.0.0",
   "description": "",
-  "main": "hooks.js",
-  "module": "dist/module.js",
+  "main": "dist/hooks.js",
   "type": "module",
   "scripts": {
     "watch": "parcel watch",
-    "build": "parcel build",
+    "build": "parcel build lib/hooks.ts --dist-dir dist --no-source-maps",
     "test": "jest --watch",
-    "test:index": "ts-node --files ./tests/index.ts"
+    "e:clock": "parcel examples/clock/index.html"
+  },
+  "targets": {
+    "main": {
+      "optimize": true
+    }
   },
   "keywords": [],
   "author": "",
