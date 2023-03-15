@@ -52,7 +52,7 @@ export const useReducer = <T, D>(reducer: Function, initialState: T): [ T, Dispa
  */
 const useStateReducer = (state: any, action: any) => (
   typeof action === 'function'
-    ? action(state) || action
+    ? action(state)
     : action
 )
 
