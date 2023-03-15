@@ -133,7 +133,12 @@ export const hooked = (fn: Function, ...args: any[]) => {
   update(fn)
 }
 
-type HookedFn<T = any> = (resolve: (value: T | PromiseLike<T>) => void, ...args: any[]) => void
+type HookedFn<T = any> = (
+  p: {
+    resolve: (value: T | PromiseLike<T>) => void,
+    reject: (reason?: any) => void
+  }, ...args: any[]
+) => void
 
 /**
  * Transforma uma função hookada em uma Promise, o primeiro argumento
@@ -144,5 +149,5 @@ type HookedFn<T = any> = (resolve: (value: T | PromiseLike<T>) => void, ...args:
  * @returns 
  */
 export const hookedPromise = <T = any>(fn: HookedFn<T>, ...args: any[]) => (
-  new Promise<T>(resolve => hooked(fn, resolve, ...args))
+  new Promise<T>((resolve, reject) => hooked(fn, { resolve, reject }, ...args))
 )
