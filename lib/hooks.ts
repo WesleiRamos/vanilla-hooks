@@ -108,7 +108,7 @@ export const useEffect = (callback: Function, deps?: any[]) => {
  * @param deps 
  * @returns 
  */
-export const useMemo = <T>(calculatedValue: () => T, deps?: any[]) => {
+export const useMemo = <T>(calculatedValue: () => T, deps?: any[]): T => {
   const context = getContext(getCurrentReference())
   const localId = context.id++
   const depsId  = context.id++
@@ -119,6 +119,18 @@ export const useMemo = <T>(calculatedValue: () => T, deps?: any[]) => {
 
   context.hooks[depsId] = deps
   return context.hooks[localId]
+}
+
+/**
+ * Recebe uma função e um array de dependências, e retorna
+ * uma função memoizada.
+ * 
+ * @param callback
+ * @param deps
+ * @returns
+ */
+export const useCallback = <T extends Function>(callback: T, deps?: any[]): T => {
+  return useMemo(() => callback, deps)
 }
 
 /**
@@ -148,6 +160,6 @@ type HookedFn<T = any> = (
  * @param args 
  * @returns 
  */
-export const hookedPromise = <T = any>(fn: HookedFn<T>, ...args: any[]) => (
+export const hookedPromise = <T>(fn: HookedFn<T>, ...args: any[]) => (
   new Promise<T>((resolve, reject) => hooked(fn, { resolve, reject }, ...args))
 )
