@@ -133,7 +133,7 @@ export const hooked = (fn: Function, ...args: any[]) => {
   update(fn)
 }
 
-type HookedFn<T = any> = (value: T | PromiseLike<T>, ...args: any[]) => void
+type HookedFn<T = any> = (resolve: (value: T | PromiseLike<T>) => void, ...args: any[]) => void
 
 /**
  * Transforma uma função hookada em uma Promise, o primeiro argumento
