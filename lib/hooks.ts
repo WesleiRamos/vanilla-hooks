@@ -100,6 +100,28 @@ export const useEffect = (callback: Function, deps?: any[]) => {
 }
 
 /**
+ * Recebe uma função e faz cache do resultado dela, caso
+ * o array de dependências tenha sido alterado, a função
+ * será chamada novamente e o resultado será cacheado.
+ * 
+ * @param calculatedValue 
+ * @param deps 
+ * @returns 
+ */
+export const useMemo = <T>(calculatedValue: () => T, deps?: any[]) => {
+  const context = getContext(getCurrentReference())
+  const localId = context.id++
+  const depsId  = context.id++
+
+  if (hasDepsChanged(deps, context.hooks[depsId])) {
+    context.hooks[localId] = calculatedValue()
+  }
+
+  context.hooks[depsId] = deps
+  return context.hooks[localId]
+}
+
+/**
  * Recebe uma função e prepara para que seja possível
  * a utilização de hooks dentro dela.
  * 
